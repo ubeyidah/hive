@@ -35,6 +35,7 @@ class Agent:
         respond_override: Optional[bool] = None,
         record_incoming: bool = True,
         message_id: Optional[str] = None,
+        context: Optional[Dict[str, object]] = None,
     ) -> Optional[str]:
         if record_incoming:
             self.shared_context.add_message(
@@ -68,6 +69,8 @@ class Agent:
 
         tool_call = self._parse_tool_call(response)
         if tool_call:
+            if context and "channel_id" in context and "channel_id" not in tool_call["params"]:
+                tool_call["params"]["channel_id"] = context["channel_id"]
             result = await self.tool_executor.run(
                 self.name,
                 self.config.tools,
@@ -76,9 +79,15 @@ class Agent:
                 tool_call["params"],
             )
             if result is not None:
-                response = (
-                    f"{response}\n\n[Tool Result: {tool_call['tool_name']}]\n{result}"
+                formatted = await self._format_tool_result(
+                    response, tool_call["tool_name"], result
                 )
+                if formatted:
+                    response = formatted
+                else:
+                    response = (
+                        f"{response}\n\n[Tool Result: {tool_call['tool_name']}]\n{result}"
+                    )
 
         self.shared_context.add_message("assistant", response, self.name)
         return response
@@ -143,6 +152,54 @@ class Agent:
         action = match.group("action").strip().lower()
         params = self._parse_params(match.group("params"))
         return {"tool_name": tool_name, "action": action, "params": params}
+
+    async def _format_tool_result(
+        self, original_response: str, tool_name: str, result: Dict
+    ) -> Optional[str]:
+        if tool_name == "schedule":
+            return self._format_schedule_result(result)
+        prompt = (
+            "You just executed a tool and got a raw result.\n"
+            f"Tool: {tool_name}\n"
+            f"Raw result: {result}\n\n"
+            "Rewrite your response to be clear and user-friendly. "
+            "Keep it concise and include only the useful outcome. "
+            "Do NOT include the raw dict."
+        )
+        formatted = await self.llm_client.chat(
+            [
+                {"role": "system", "content": "You format tool results for users."},
+                {"role": "assistant", "content": original_response},
+                {"role": "user", "content": prompt},
+            ]
+        )
+        if not formatted:
+            return None
+        return formatted.strip() or None
+
+    @staticmethod
+    def _format_schedule_result(result: Dict) -> str:
+        status = str(result.get("status") or "").lower()
+        if status == "scheduled":
+            job_id = result.get("job_id")
+            next_run = result.get("next_run")
+            return f"Scheduled. Job id: {job_id}. Next run: {next_run}."
+        if status == "ok" and "jobs" in result:
+            jobs = result.get("jobs") or []
+            if not jobs:
+                return "No schedules found."
+            lines = []
+            for job in jobs:
+                lines.append(
+                    f"- {job.get('job_id')} | {job.get('schedule_type')} | "
+                    f"next: {job.get('next_run')} | {job.get('task')}"
+                )
+            return "Schedules:\n" + "\n".join(lines)
+        if status == "ok" and "job_id" in result:
+            return f"Removed schedule {result.get('job_id')}."
+        if status == "not_found" and "job_id" in result:
+            return f"Schedule not found: {result.get('job_id')}."
+        return "Schedule updated."
 
     @staticmethod
     def _parse_params(raw_params: str) -> Dict[str, str]:

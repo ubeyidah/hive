@@ -11,6 +11,7 @@ from hive.config.loader import load_all_agents, load_settings
 from hive.tools.executor import ToolExecutor
 from hive.tools.mcp_bridge import MCPBridge
 from hive.tools.registry import ToolRegistry
+from hive.tools.scheduler import ScheduleStore
 
 
 class AgentManager:
@@ -22,12 +23,13 @@ class AgentManager:
         settings = load_settings()
         agent_configs = load_all_agents()
         registry = ToolRegistry()
+        schedule_store = ScheduleStore()
         for config in agent_configs:
             for tool in config.tools:
                 if registry.get_tool(tool.name) is None:
                     registry.register(tool)
         mcp_bridge = MCPBridge(registry)
-        tool_executor = ToolExecutor(registry, mcp_bridge)
+        tool_executor = ToolExecutor(registry, mcp_bridge, schedule_store)
         for config in agent_configs:
             llm_config = config.llm or settings.default_llm
             agent = Agent(

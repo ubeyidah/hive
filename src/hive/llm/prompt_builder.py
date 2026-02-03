@@ -44,7 +44,18 @@ class PromptBuilder:
             "Example:\n"
             "[TOOL: gmail | action: send | params: to=user@email.com, "
             "subject=Hello, body=Hi there]\n"
-            "You can only use tools you have permission for."
+            "You can only use tools you have permission for.\n\n"
+            "Scheduling:\n"
+            "If the user asks to schedule a task, use the schedule tool.\n"
+            "Params for schedule:\n"
+            "- type=interval with interval_minutes\n"
+            "- type=cron with cron (minute hour * * *)\n"
+            "- task=<what to do>\n"
+            "- action=list to list schedules\n"
+            "- action=delete with job_id to remove a schedule\n"
+            "Example:\n"
+            "[TOOL: schedule | action: write | params: type=interval, "
+            "interval_minutes=2, task=Check if the user is awake]"
         )
 
         prompt_parts = [
