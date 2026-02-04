@@ -1,4 +1,4 @@
-"""Shared context manager for Hive agents."""
+"""Shared context manager for Openbuden agents."""
 
 from __future__ import annotations
 

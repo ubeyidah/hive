@@ -1,1 +1,1 @@
-"""Configuration package for Hive."""
+"""Configuration package for Openbuden."""
