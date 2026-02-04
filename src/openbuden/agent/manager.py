@@ -1,17 +1,17 @@
-"""Agent manager for Hive."""
+"""Agent manager for Openbuden."""
 
 from __future__ import annotations
 
 import asyncio
 from typing import Dict, List, Optional, Tuple
 
-from hive.agent.agent import Agent
-from hive.agent.context import SharedContext
-from hive.config.loader import load_all_agents, load_settings
-from hive.tools.executor import ToolExecutor
-from hive.tools.mcp_bridge import MCPBridge
-from hive.tools.registry import ToolRegistry
-from hive.tools.scheduler import ScheduleStore
+from openbuden.agent.agent import Agent
+from openbuden.agent.context import SharedContext
+from openbuden.config.loader import load_all_agents, load_settings
+from openbuden.tools.executor import ToolExecutor
+from openbuden.tools.mcp_bridge import MCPBridge
+from openbuden.tools.registry import ToolRegistry
+from openbuden.tools.scheduler import ScheduleStore
 
 
 class AgentManager:

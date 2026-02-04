@@ -1,4 +1,4 @@
-"""Schedule storage and runner for Hive agents."""
+"""Schedule storage and runner for Openbuden agents."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ from uuid import uuid4
 
 import yaml
 
-from hive.config.loader import get_config_dir
+from openbuden.config.loader import get_config_dir
 
 
 @dataclass

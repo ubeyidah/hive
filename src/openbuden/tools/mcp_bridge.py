@@ -1,10 +1,10 @@
-"""MCP bridge for Hive tools."""
+"""MCP bridge for Openbuden tools."""
 
 from __future__ import annotations
 
 from typing import Any, Dict, Optional
 
-from hive.tools.registry import ToolRegistry
+from openbuden.tools.registry import ToolRegistry
 
 
 class MCPBridge:

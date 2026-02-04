@@ -1,4 +1,4 @@
-"""CLI entry point for Hive."""
+"""CLI entry point for Openbuden."""
 
 import asyncio
 import click
@@ -8,30 +8,30 @@ from pathlib import Path
 import yaml
 
 try:
-    from hive.agent.manager import AgentManager
-    from hive.config.loader import get_config_dir, load_all_agents, load_settings
-    from hive.discord.bot_manager import BotManager
-    from hive.llm.client import HiveLLMClient
-    from hive.tools.mcp_bridge import MCPBridge
-    from hive.tools.registry import ToolRegistry
-except ModuleNotFoundError:  # Allows `python src/hive/cli.py ...`
+    from openbuden.agent.manager import AgentManager
+    from openbuden.config.loader import get_config_dir, load_all_agents, load_settings
+    from openbuden.discord.bot_manager import BotManager
+    from openbuden.llm.client import OpenbudenLLMClient
+    from openbuden.tools.mcp_bridge import MCPBridge
+    from openbuden.tools.registry import ToolRegistry
+except ModuleNotFoundError:  # Allows `python src/openbuden/cli.py ...`
     sys.path.append(str(Path(__file__).resolve().parents[2]))
-    from hive.agent.manager import AgentManager
-    from hive.config.loader import get_config_dir, load_all_agents, load_settings
-    from hive.discord.bot_manager import BotManager
-    from hive.llm.client import HiveLLMClient
-    from hive.tools.mcp_bridge import MCPBridge
-    from hive.tools.registry import ToolRegistry
+    from openbuden.agent.manager import AgentManager
+    from openbuden.config.loader import get_config_dir, load_all_agents, load_settings
+    from openbuden.discord.bot_manager import BotManager
+    from openbuden.llm.client import OpenbudenLLMClient
+    from openbuden.tools.mcp_bridge import MCPBridge
+    from openbuden.tools.registry import ToolRegistry
 
 
 @click.group()
 def main() -> None:
-    """Hive command line interface."""
+    """Openbuden command line interface."""
 
 
 @main.command()
 def start() -> None:
-    """Start Hive services."""
+    """Start Openbuden services."""
     agent_manager = AgentManager()
     agent_manager.setup()
     bot_manager = BotManager(agent_manager)
@@ -39,7 +39,7 @@ def start() -> None:
     try:
         asyncio.run(bot_manager.start_all())
     except KeyboardInterrupt:
-        click.echo("Shutting down Hive...")
+        click.echo("Shutting down Openbuden...")
         asyncio.run(bot_manager.stop_all())
 
 
@@ -84,7 +84,7 @@ def add_agent() -> None:
     )
 
     soul_template = (
-        f"You are {name}. You are a helpful agent in the Hive team.\n"
+        f"You are {name}. You are a helpful agent in the Openbuden team.\n"
         f"Your skills are: {', '.join(skills)}.\n"
         "You are collaborative and communicate clearly.\n"
     )
@@ -116,7 +116,7 @@ def list_agents() -> None:
     """List configured agents."""
     agents = load_all_agents()
     if not agents:
-        click.echo("No agents yet. Run 'hive add-agent' to create one.")
+        click.echo("No agents yet. Run 'openbuden add-agent' to create one.")
         return
 
     for agent in agents:
@@ -148,22 +148,22 @@ def config() -> None:
             "guild_id": guild_id,
         }
         settings_path.write_text(
-            "# Hive Settings\n" + yaml.safe_dump(settings, sort_keys=False),
+            "# Openbuden Settings\n" + yaml.safe_dump(settings, sort_keys=False),
             encoding="utf-8",
         )
         env_path = Path(".env")
         if not env_path.exists():
-            env_path.write_text("HIVE_LLM_API_KEY=\n", encoding="utf-8")
-        click.echo("Config created at ~/.config/hive/settings.yaml")
+            env_path.write_text("OPENBUDEN_LLM_API_KEY=\n", encoding="utf-8")
+        click.echo("Config created at ~/.config/openbuden/settings.yaml")
         click.echo("Edit this file and fill in your values.")
-        click.echo("Set HIVE_LLM_API_KEY in .env")
+        click.echo("Set OPENBUDEN_LLM_API_KEY in .env")
         return
 
     env_path = Path(".env")
     if not env_path.exists():
-        env_path.write_text("HIVE_LLM_API_KEY=\n", encoding="utf-8")
-    click.echo("Config already exists at ~/.config/hive/settings.yaml")
-    click.echo("Set HIVE_LLM_API_KEY in .env")
+        env_path.write_text("OPENBUDEN_LLM_API_KEY=\n", encoding="utf-8")
+    click.echo("Config already exists at ~/.config/openbuden/settings.yaml")
+    click.echo("Set OPENBUDEN_LLM_API_KEY in .env")
 
 
 @main.command()
@@ -172,13 +172,13 @@ def test() -> None:
     settings = load_settings()
     agents = load_all_agents()
     if not agents:
-        click.echo("No agents yet. Run 'hive add-agent' to create one.")
+        click.echo("No agents yet. Run 'openbuden add-agent' to create one.")
         return
 
     async def run_tests() -> None:
         for agent in agents:
             llm_config = agent.llm or settings.default_llm
-            client = HiveLLMClient(llm_config)
+            client = OpenbudenLLMClient(llm_config)
             click.echo(f"Testing {agent.name}...")
             await client.test_connection()
 
@@ -190,7 +190,7 @@ def list_tools() -> None:
     """List registered tools and status."""
     agents = load_all_agents()
     if not agents:
-        click.echo("No agents yet. Run 'hive add-agent' to create one.")
+        click.echo("No agents yet. Run 'openbuden add-agent' to create one.")
         return
 
     registry = ToolRegistry()

@@ -1,5 +1,5 @@
 def main():
-    print("Hello from hive!")
+    print("Hello from openbuden!")
 
 
 if __name__ == "__main__":
