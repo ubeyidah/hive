@@ -1,15 +1,15 @@
-"""Agent brain implementation for Hive."""
+"""Agent brain implementation for Openbuden."""
 
 from __future__ import annotations
 
 import re
 from typing import Dict, List, Optional, Tuple
 
-from hive.agent.context import SharedContext
-from hive.config.schema import AgentConfig, LLMConfig
-from hive.llm.client import HiveLLMClient
-from hive.llm.prompt_builder import PromptBuilder
-from hive.tools.executor import ToolExecutor
+from openbuden.agent.context import SharedContext
+from openbuden.config.schema import AgentConfig, LLMConfig
+from openbuden.llm.client import OpenbudenLLMClient
+from openbuden.llm.prompt_builder import PromptBuilder
+from openbuden.tools.executor import ToolExecutor
 
 
 class Agent:
@@ -22,7 +22,7 @@ class Agent:
         tool_executor: ToolExecutor,
     ) -> None:
         self.config = config
-        self.llm_client = HiveLLMClient(llm_config)
+        self.llm_client = OpenbudenLLMClient(llm_config)
         self.prompt_builder = PromptBuilder(config, all_agents)
         self.shared_context = shared_context
         self.tool_executor = tool_executor
@@ -125,7 +125,7 @@ class Agent:
 
     async def should_respond(self, message: str) -> bool:
         soul_lines = [line for line in self.prompt_builder.soul.splitlines() if line]
-        soul_summary = soul_lines[0] if soul_lines else "Hive agent"
+        soul_summary = soul_lines[0] if soul_lines else "Openbuden agent"
         prompt = (
             "Given this message: '{message}'\n"
             "And your role: {soul_summary}\n"

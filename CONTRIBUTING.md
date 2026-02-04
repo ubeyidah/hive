@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for your interest in contributing to Hive.
+Thanks for your interest in contributing to Openbuden.
 
 ## How to Contribute
 1. Fork the repository.

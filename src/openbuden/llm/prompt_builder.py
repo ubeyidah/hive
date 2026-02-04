@@ -1,11 +1,11 @@
-"""Prompt building utilities for Hive agents."""
+"""Prompt building utilities for Openbuden agents."""
 
 from __future__ import annotations
 
 from typing import List, Dict
 
-from hive.config.loader import load_soul
-from hive.config.schema import AgentConfig
+from openbuden.config.loader import load_soul
+from openbuden.config.schema import AgentConfig
 
 
 class PromptBuilder:
@@ -60,7 +60,7 @@ class PromptBuilder:
 
         prompt_parts = [
             self.soul.strip(),
-            "You are part of a team called Hive. Teammates:",
+            "You are part of a team called Openbuden. Teammates:",
             "\n".join(teammate_lines) if teammate_lines else "- (none)",
             rules.strip(),
             tool_usage.strip(),

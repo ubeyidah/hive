@@ -1,10 +1,10 @@
-"""Tool registry and permissions for Hive."""
+"""Tool registry and permissions for Openbuden."""
 
 from __future__ import annotations
 
 from typing import Dict, List, Optional
 
-from hive.config.schema import ToolConfig
+from openbuden.config.schema import ToolConfig
 
 
 class ToolRegistry:

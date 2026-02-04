@@ -1,9 +1,9 @@
-# Hive
+# Openbuden
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
 ![Python](https://img.shields.io/badge/python-3.14%2B-blue.svg)
 
-Hive is a multi-agent Discord system where each agent runs as its own bot, shares a common context, and can call tools through MCP. It is designed for teams that want collaborative agents that can reason together while staying specialized.
+Openbuden is a multi-agent Discord system where each agent runs as its own bot, shares a common context, and can call tools through MCP. It is designed for teams that want collaborative agents that can reason together while staying specialized.
 
 ## Highlights
 - One Discord bot per agent
@@ -29,41 +29,41 @@ Hive is a multi-agent Discord system where each agent runs as its own bot, share
    ```
 3. Create base configuration:
    ```bash
-   hive config
+   openbuden config
    ```
 4. Add your first agent:
    ```bash
-   hive add-agent
+   openbuden add-agent
    ```
-5. Start Hive:
+5. Start Openbuden:
    ```bash
-   hive start
+   openbuden start
    ```
 
 ## Configuration
-Hive uses two config locations:
-- `~/.config/hive/settings.yaml` for shared defaults
-- `.env` in the project root for `HIVE_LLM_API_KEY`
+Openbuden uses two config locations:
+- `~/.config/openbuden/settings.yaml` for shared defaults
+- `.env` in the project root for `OPENBUDEN_LLM_API_KEY`
 
 To create them, run:
 ```bash
-hive config
+openbuden config
 ```
 
 ## Common Commands
-- `hive config` — create or update the base settings
-- `hive add-agent` — create a new agent
-- `hive list` — list agents and their tools
-- `hive tools` — show registered tools and permissions
-- `hive test` — verify LLM connectivity
-- `hive start` — start all Discord bots
+- `openbuden config` — create or update the base settings
+- `openbuden add-agent` — create a new agent
+- `openbuden list` — list agents and their tools
+- `openbuden tools` — show registered tools and permissions
+- `openbuden test` — verify LLM connectivity
+- `openbuden start` — start all Discord bots
 
 ## Documentation
 See `GUIDE.md` for full documentation, examples, and troubleshooting.
 
 ## Project Structure
 ```
-src/hive/
+src/openbuden/
   agent/      # Agent logic and shared context
   config/     # YAML config loading and schemas
   discord/    # Discord bot runtime

@@ -1,7 +1,7 @@
-# Hive Guide
+# Openbuden Guide
 
-## What is Hive
-Hive is a multi-agent Discord system where each agent runs as its own bot. Agents share a common context, use an LLM through LiteLLM, and can call external tools via MCP when permitted.
+## What is Openbuden
+Openbuden is a multi-agent Discord system where each agent runs as its own bot. Agents share a common context, use an LLM through LiteLLM, and can call external tools via MCP when permitted.
 
 ## Requirements
 - Python 3.14+
@@ -28,14 +28,14 @@ LLM API key:
 3. Install in editable mode: `uv pip install -e .`
 
 ## First Setup
-1. Run `hive config`.
-2. It creates `~/.config/hive/settings.yaml` and a local `.env`.
+1. Run `openbuden config`.
+2. It creates `~/.config/openbuden/settings.yaml` and a local `.env`.
 3. Edit `settings.yaml` and `.env`.
-4. Create your first agent with `hive add-agent`.
+4. Create your first agent with `openbuden add-agent`.
 
 `settings.yaml` structure:
 ```yaml
-# Hive Settings
+# Openbuden Settings
 # default_llm defines the shared default model
 # guild_id is the Discord server ID for your bots
 
@@ -48,24 +48,24 @@ guild_id: 123456789012345678
 
 `.env` for API key:
 ```bash
-HIVE_LLM_API_KEY=your_api_key_here
+OPENBUDEN_LLM_API_KEY=your_api_key_here
 ```
 
-`hive add-agent` prompts:
+`openbuden add-agent` prompts:
 - Agent name
 - Discord bot token
 - Skills list
 - Tools list
 - Optional LLM provider/model override
 
-Files created for each agent in `~/.config/hive/agents/{name}/`:
+Files created for each agent in `~/.config/openbuden/agents/{name}/`:
 - `agent.yaml`
 - `skills.yaml`
 - `tools.yaml`
 - `soul.md`
 
 ## Agent Configuration
-Each agent lives at `~/.config/hive/agents/{name}/`.
+Each agent lives at `~/.config/openbuden/agents/{name}/`.
 
 `agent.yaml` example:
 ```yaml
@@ -95,7 +95,7 @@ llm:
 
 `soul.md` example:
 ```
-You are writer. You are a helpful agent in the Hive team.
+You are writer. You are a helpful agent in the Openbuden team.
 Your skills are: post writing, research.
 You are collaborative and communicate clearly.
 ```
@@ -106,7 +106,7 @@ Tips for a good soul:
 - Keep it short and actionable.
 
 ## Settings Configuration
-`~/.config/hive/settings.yaml` contains shared defaults.
+`~/.config/openbuden/settings.yaml` contains shared defaults.
 
 Fields:
 - `default_llm`: the fallback LLM for agents without their own `llm` block
@@ -118,7 +118,7 @@ Supported providers:
 - `groq`
 
 ## Tools
-Hive tools are configured per agent and enforced by permissions.
+Openbuden tools are configured per agent and enforced by permissions.
 
 Permissions:
 - `read`
@@ -139,14 +139,14 @@ Example tool call:
 [TOOL: gmail | action: send | params: to=user@email.com, subject=Hello, body=Hi there]
 ```
 
-## Running Hive
-- Start bots: `hive start`
-- Test LLM connectivity: `hive test`
-- List agents: `hive list`
-- List tools: `hive tools`
+## Running Openbuden
+- Start bots: `openbuden start`
+- Test LLM connectivity: `openbuden test`
+- List agents: `openbuden list`
+- List tools: `openbuden tools`
 - Stop: Ctrl+C
 
-## Using Hive in Discord
+## Using Openbuden in Discord
 - Mention an agent with `@agent_name` to force a reply.
 - Agents decide to respond if not mentioned based on their soul and the message.
 - Agents share context, so they can collaborate across tasks.
@@ -159,18 +159,18 @@ Writer: [TOOL: gmail | action: send | params: to=team@email.com, subject=Draft, 
 ```
 
 ## Adding More Agents
-- Run `hive add-agent` again for each new agent.
+- Run `openbuden add-agent` again for each new agent.
 - Agents see all teammates in their system prompt.
 - Use clear skills and tools to help routing.
 
 ## Troubleshooting
 Bot not responding: Ensure the bot is invited to the server, has permissions, and the Message Content intent is enabled. Verify the bot token in `agent.yaml`.
 
-LLM connection failing: Ensure `HIVE_LLM_API_KEY` is set in `.env` and verify provider/model names.
+LLM connection failing: Ensure `OPENBUDEN_LLM_API_KEY` is set in `.env` and verify provider/model names.
 
 Tool permission errors: Check `tools.yaml` for `enabled` and correct permissions.
 
-Config file not found: Run `hive config` to create settings.
+Config file not found: Run `openbuden config` to create settings.
 
 Discord token errors: Regenerate the token and update `agent.yaml`.
 
@@ -184,7 +184,7 @@ Discord token errors: Regenerate the token and update `agent.yaml`.
 ├── main.py
 ├── pyproject.toml
 ├── src
-│   └── hive
+│   └── openbuden
 │       ├── __init__.py
 │       ├── cli.py
 │       ├── agent

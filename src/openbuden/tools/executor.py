@@ -1,13 +1,13 @@
-"""Tool execution entry point for Hive agents."""
+"""Tool execution entry point for Openbuden agents."""
 
 from __future__ import annotations
 
 from typing import Dict, Optional
 
-from hive.config.schema import ToolConfig
-from hive.tools.mcp_bridge import MCPBridge
-from hive.tools.registry import ToolRegistry
-from hive.tools.scheduler import ScheduleStore
+from openbuden.config.schema import ToolConfig
+from openbuden.tools.mcp_bridge import MCPBridge
+from openbuden.tools.registry import ToolRegistry
+from openbuden.tools.scheduler import ScheduleStore
 
 
 class ToolExecutor:

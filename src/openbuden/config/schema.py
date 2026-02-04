@@ -1,4 +1,4 @@
-"""Dataclass schemas for Hive configuration."""
+"""Dataclass schemas for Openbuden configuration."""
 
 from __future__ import annotations
 
@@ -38,6 +38,6 @@ class AgentConfig:
 
 
 @dataclass
-class HiveSettings:
+class OpenbudenSettings:
     default_llm: LLMConfig
     guild_id: int

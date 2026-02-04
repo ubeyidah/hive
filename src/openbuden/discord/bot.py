@@ -1,4 +1,4 @@
-"""Discord bot implementation for Hive agents."""
+"""Discord bot implementation for Openbuden agents."""
 
 from __future__ import annotations
 
@@ -6,11 +6,11 @@ import discord
 from discord import app_commands
 from typing import Optional
 
-from hive.agent.agent import Agent
-from hive.tools.scheduler import ScheduleStore
+from openbuden.agent.agent import Agent
+from openbuden.tools.scheduler import ScheduleStore
 
 
-class HiveBot(discord.Client):
+class OpenbudenBot(discord.Client):
     def __init__(
         self,
         agent: Agent,
@@ -27,7 +27,7 @@ class HiveBot(discord.Client):
         self._register_commands()
 
     def _register_commands(self) -> None:
-        hive_group = app_commands.Group(name="hive", description="Hive commands")
+        openbuden_group = app_commands.Group(name="openbuden", description="Openbuden commands")
         schedule_group = app_commands.Group(
             name="schedule", description="Schedule tasks"
         )
@@ -103,8 +103,8 @@ class HiveBot(discord.Client):
                 return
             await interaction.response.send_message(f"Removed schedule `{job_id}`.")
 
-        hive_group.add_command(schedule_group)
-        self.tree.add_command(hive_group)
+        openbuden_group.add_command(schedule_group)
+        self.tree.add_command(openbuden_group)
 
     async def setup_hook(self) -> None:
         if self.guild_id:

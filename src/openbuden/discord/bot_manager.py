@@ -1,4 +1,4 @@
-"""Discord bot manager for Hive."""
+"""Discord bot manager for Openbuden."""
 
 from __future__ import annotations
 
@@ -7,16 +7,16 @@ from typing import List
 
 import discord
 
-from hive.agent.manager import AgentManager
-from hive.discord.bot import HiveBot
-from hive.config.loader import load_settings
-from hive.tools.scheduler import ScheduleRunner, ScheduleStore
+from openbuden.agent.manager import AgentManager
+from openbuden.discord.bot import OpenbudenBot
+from openbuden.config.loader import load_settings
+from openbuden.tools.scheduler import ScheduleRunner, ScheduleStore
 
 
 class BotManager:
     def __init__(self, agent_manager: AgentManager) -> None:
         self.agent_manager = agent_manager
-        self.bots: List[HiveBot] = []
+        self.bots: List[OpenbudenBot] = []
         self.schedule_store = ScheduleStore()
         self.schedule_runner = ScheduleRunner(self.schedule_store)
 
@@ -25,7 +25,7 @@ class BotManager:
         for agent in self.agent_manager.get_all_agents():
             intents = discord.Intents.default()
             intents.message_content = True
-            bot = HiveBot(
+            bot = OpenbudenBot(
                 agent,
                 schedule_store=self.schedule_store,
                 guild_id=settings.guild_id,
@@ -69,7 +69,7 @@ class BotManager:
 
         await self.schedule_runner.run(execute)
 
-    def _get_bot_for_agent(self, agent_name: str) -> HiveBot | None:
+    def _get_bot_for_agent(self, agent_name: str) -> OpenbudenBot | None:
         for bot in self.bots:
             if bot.agent.name == agent_name:
                 return bot

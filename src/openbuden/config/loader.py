@@ -1,4 +1,4 @@
-"""YAML configuration loader for Hive."""
+"""YAML configuration loader for Openbuden."""
 
 from __future__ import annotations
 
@@ -8,33 +8,33 @@ from typing import Any, Dict, List
 import yaml
 from dotenv import load_dotenv
 
-from .schema import AgentConfig, DiscordConfig, HiveSettings, LLMConfig, ToolConfig
+from .schema import AgentConfig, DiscordConfig, OpenbudenSettings, LLMConfig, ToolConfig
 
 
-CONFIG_DIRNAME = ".config/hive"
-API_KEY_ENV = "HIVE_LLM_API_KEY"
+CONFIG_DIRNAME = ".config/openbuden"
+API_KEY_ENV = "OPENBUDEN_LLM_API_KEY"
 
 
 def get_config_dir() -> Path:
-    """Return the Hive config directory, creating it if needed."""
+    """Return the Openbuden config directory, creating it if needed."""
     config_dir = Path.home() / CONFIG_DIRNAME
     config_dir.mkdir(parents=True, exist_ok=True)
     return config_dir
 
 
-def load_settings() -> HiveSettings:
-    """Load the global Hive settings."""
+def load_settings() -> OpenbudenSettings:
+    """Load the global Openbuden settings."""
     load_dotenv()
     settings_path = get_config_dir() / "settings.yaml"
     if not settings_path.exists():
-        raise FileNotFoundError("Settings not found. Run 'hive config' to set up.")
+        raise FileNotFoundError("Settings not found. Run 'openbuden config' to set up.")
 
     data = _read_yaml_dict(settings_path)
     default_llm_data = _require_mapping(data, "default_llm", settings_path)
     default_llm = _parse_llm_config(default_llm_data, settings_path)
     guild_id = _require_int(data, "guild_id", settings_path)
 
-    return HiveSettings(
+    return OpenbudenSettings(
         default_llm=default_llm,
         guild_id=guild_id,
     )

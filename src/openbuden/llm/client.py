@@ -1,4 +1,4 @@
-"""LiteLLM client wrapper for Hive."""
+"""LiteLLM client wrapper for Openbuden."""
 
 from __future__ import annotations
 
@@ -6,10 +6,10 @@ from typing import List, Dict, Optional
 
 import litellm
 
-from hive.config.schema import LLMConfig
+from openbuden.config.schema import LLMConfig
 
 
-class HiveLLMClient:
+class OpenbudenLLMClient:
     def __init__(self, llm_config: LLMConfig) -> None:
         self.llm_config = llm_config
         self.model = self._build_model_string(llm_config.provider, llm_config.model)
